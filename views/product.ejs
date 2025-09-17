@@ -1,0 +1,65 @@
+<% layout("/layouts/boilerplate") %>
+   <h1 class="mb-4 text-center">Products in <%= category %> Category</h1>
+
+<div class="row g-4">
+  <% products.forEach(product => { %>
+    <div class="col-md-4">
+      <div class="card h-100 shadow-sm border-0 rounded-4">
+        
+        <!-- Product Image -->
+        <img src="<%= product.image %>" 
+             class="card-img-top rounded-top-4"
+             alt="<%= product.name %>"
+             style="height: 250px; object-fit: cover;">
+        
+        <div class="card-body d-flex flex-column">
+          <!-- Title & Badges -->
+          <h5 class="card-title fw-bold">
+            <%= product.name %>
+            <% if(product.isTrending) { %>
+              <span class="badge bg-danger ms-1">🔥 Trending</span>
+            <% } %>
+            <% if(product.isFlashSale) { %>
+              <span class="badge bg-success ms-1">⚡ Flash Sale</span>
+            <% } %>
+          </h5>
+
+          <p class="text-muted mb-1"><strong>Category:</strong> <%= product.category %></p>
+          <p class="text-muted mb-1"><strong>Season:</strong> <%= product.season || "N/A" %></p>
+          <p class="mb-2"><%= product.description %></p>
+
+          <!-- Price -->
+          <div class="mb-2">
+            <% if(product.discount && product.discount > 0) { %>
+              <span class="fw-bold text-success fs-5 me-2">
+                ₹<%= product.amount - (product.amount * product.discount / 100) %>
+              </span>
+              <span class="text-decoration-line-through text-muted">
+                ₹<%= product.amount %>
+              </span>
+              <span class="badge bg-warning text-dark ms-2"><%= product.discount %>% OFF</span>
+            <% } else { %>
+              <span class="fw-bold text-success fs-5">₹<%= product.amount %></span>
+            <% } %>
+          </div>
+
+          <p><strong>Stock:</strong> 
+            <span class="<%= product.stock > 0 ? 'text-success' : 'text-danger' %> fw-semibold">
+              <%= product.stock %>
+            </span>
+          </p>
+
+       
+
+          <!-- Actions -->
+        
+        </div>
+      </div>
+    </div>
+  <% }) %>
+</div>
+
+
+    <a href="/categories">View All Categories</a>
+
+

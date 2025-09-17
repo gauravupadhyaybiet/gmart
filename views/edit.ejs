@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Product</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        div {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 100px;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        a {
+            margin-top: 20px;
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Update Product</h1>
+    <form action="/product/<%= product._id %>" method="POST">
+        <div>
+            <label for="name">Product Name:</label>
+            <input type="text" id="name" name="product[name]" value="<%= product.name %>" required>
+        </div>
+        <div>
+            <label for="category">Category:</label>
+            <input type="text" id="category" name="product[category]" value="<%= product.category %>" required>
+        </div>
+        <div>
+            <label for="amount">Amount:</label>
+            <input type="number" id="amount" name="product[amount]" value="<%= product.amount %>" min="0" required>
+        </div>
+        <div>
+            <label for="description">Description:</label>
+            <textarea id="description" name="product[description]" required><%= product.description %></textarea>
+        </div>
+        <div>
+            <label for="stock">Stock:</label>
+            <input type="number" id="stock" name="product[stock]" value="<%= product.stock %>" min="0" required>
+        </div>
+        <div>
+            <label for="image">Image URL:</label>
+            <input type="text" id="image" name="product[image]" value="<%= product.image %>" required>
+        </div>
+
+        <!-- Flash Sale -->
+        <input type="hidden" name="product[isFlashSale]" value="false">
+        <label>
+            <input type="checkbox" name="product[isFlashSale]" value="true" <%=product.isFlashSale ? "checked" : "" %> >
+            Flash Sale
+        </label>
+
+        <!-- Discount -->
+        <div>
+            <label for="discount">Discount (%):</label>
+            <input type="number" id="discount" name="product[discount]" value="<%= product.discount %>" min="0"
+                max="100">
+        </div>
+
+        <!-- Sale Price -->
+
+
+        <!-- Trending -->
+        <!-- Trending -->
+        <input type="hidden" name="product[isTrending]" value="false">
+        <label>
+            <input type="checkbox" name="product[isTrending]" value="true" <%=product.isTrending ? "checked" : "" %> >
+            Trending
+        </label>
+
+        <!-- Season -->
+        <div>
+            <label for="season">Season:</label>
+            <select id="season" name="product[season]">
+                <option value="">-- Select Season --</option>
+                <option value="spring" <%=product.season==="spring" ? "selected" : "" %>>Spring</option>
+                <option value="summer" <%=product.season==="summer" ? "selected" : "" %>>Summer</option>
+                <option value="fall" <%=product.season==="fall" ? "selected" : "" %>>Fall</option>
+                <option value="winter" <%=product.season==="winter" ? "selected" : "" %>>Winter</option>
+            </select>
+        </div>
+
+        <button type="submit">Update Product</button>
+    </form>
+    <a href="/categories">Back to Categories</a>
+</body>
+
+</html>

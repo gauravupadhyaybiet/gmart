@@ -1,0 +1,175 @@
+<%- include('layouts/header') %>
+
+<div class="hero-section bg-gradient-to-r from-purple-600 to-blue-500 text-white py-20">
+    <div class="container mx-auto px-4">
+        <h1 class="text-5xl font-bold mb-4">Welcome to Our Store</h1>
+        <p class="text-xl mb-8">Discover amazing products at unbeatable prices</p>
+        <a href="/products" class="bg-white text-purple-600 px-8 py-3 rounded-full font-semibold hover:bg-gray-100 transition duration-300">Shop Now</a>
+    </div>
+</div>
+
+<!-- Featured Categories -->
+<section class="py-16">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold mb-8 text-center">Shop by Category</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <% categories.forEach(category => { %>
+                <div class="category-card bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition duration-300">
+                    <img src="<%= category.image %>" alt="<%= category.name %>" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2"><%= category.name %></h3>
+                        <a href="/category/<%= category.slug %>" class="text-purple-600 hover:text-purple-800">View Collection →</a>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+</section>
+
+<!-- Flash Sale Section -->
+<section class="bg-red-50 py-16">
+    <div class="container mx-auto px-4">
+        <div class="flex justify-between items-center mb-8">
+            <h2 class="text-3xl font-bold">Flash Sale</h2>
+            <div class="countdown text-2xl font-bold text-red-600" data-end-time="<%= flashSaleEndTime %>">
+                <!-- Countdown will be populated by JavaScript -->
+            </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <% flashSaleProducts.forEach(product => { %>
+                <div class="product-card bg-white rounded-lg shadow-lg overflow-hidden">
+                    <div class="relative">
+                        <img src="<%= product.image %>" alt="<%= product.name %>" class="w-full h-48 object-cover">
+                        <div class="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 rounded">
+                            <%= product.discount %>% OFF
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold mb-2"><%= product.name %></h3>
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="text-red-600 font-bold">$<%= product.salePrice %></span>
+                                <span class="text-gray-500 line-through ml-2">$<%= product.originalPrice %></span>
+                            </div>
+                            <button class="add-to-cart bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700" 
+                                    data-product-id="<%= product._id %>">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+</section>
+
+<!-- Recently Viewed Products -->
+<section class="py-16">
+    <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold mb-8">Recently Viewed</h2>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6" id="recently-viewed">
+            <!-- Will be populated by JavaScript -->
+        </div>
+    </div>
+</section>
+
+<!-- Newsletter Section -->
+<section class="bg-gray-100 py-16">
+    <div class="container mx-auto px-4 text-center">
+        <h2 class="text-3xl font-bold mb-4">Stay Updated</h2>
+        <p class="text-gray-600 mb-8">Subscribe to our newsletter for exclusive offers and updates</p>
+        <form class="max-w-md mx-auto" id="newsletter-form">
+            <div class="flex gap-4">
+                <input type="email" placeholder="Enter your email" 
+                       class="flex-1 px-4 py-2 rounded-lg border focus:outline-none focus:border-purple-600">
+                <button type="submit" 
+                        class="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition duration-300">
+                    Subscribe
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<script>
+// Countdown Timer
+function updateCountdown() {
+    const countdownElements = document.querySelectorAll('.countdown');
+    countdownElements.forEach(element => {
+        const endTime = new Date(element.dataset.endTime).getTime();
+        const now = new Date().getTime();
+        const distance = endTime - now;
+
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        element.innerHTML = `${hours}h ${minutes}m ${seconds}s`;
+    });
+}
+
+setInterval(updateCountdown, 1000);
+updateCountdown();
+
+// Recently Viewed Products
+function loadRecentlyViewed() {
+    const recentlyViewed = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
+    const container = document.getElementById('recently-viewed');
+    
+    if (recentlyViewed.length > 0) {
+        fetch('/api/products/recently-viewed', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ productIds: recentlyViewed })
+        })
+        .then(response => response.json())
+        .then(products => {
+            container.innerHTML = products.map(product => `
+                <div class="product-card bg-white rounded-lg shadow-lg overflow-hidden">
+                    <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover">
+                    <div class="p-4">
+                        <h3 class="font-semibold mb-2">${product.name}</h3>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold">$${product.price}</span>
+                            <button class="add-to-cart bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
+                                    data-product-id="${product._id}">
+                                Add to Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        });
+    } else {
+        container.innerHTML = '<p class="col-span-4 text-center text-gray-500">No recently viewed products</p>';
+    }
+}
+
+loadRecentlyViewed();
+
+// Newsletter Subscription
+document.getElementById('newsletter-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const email = this.querySelector('input[type="email"]').value;
+    
+    fetch('/api/newsletter/subscribe', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email })
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert('Thank you for subscribing!');
+        this.reset();
+    })
+    .catch(error => {
+        alert('Something went wrong. Please try again.');
+    });
+});
+</script>
+
+<%- include('layouts/footer') %> 

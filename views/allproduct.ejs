@@ -1,0 +1,90 @@
+<% layout("/layouts/boilerplate") %>
+
+<body class="bg-light">
+  <% if (success && success.length) { %>
+    <div class="container mt-3">
+      <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+        <i class="bi bi-check-circle-fill me-2"></i> <%= success %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    </div>
+  <% } %>
+
+  <% if (error && error.length) { %>
+    <div class="container mt-3">
+      <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i> <%= error %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    </div>
+  <% } %>
+
+  <div class="container py-5">
+    <h1 class="text-center fw-bold mb-5 text-primary">✨ Welcome to G-mart ✨</h1>
+
+    <div class="row g-4">
+      <% if (showproducts && showproducts.length) { %>
+        <% showproducts.forEach(product => { %>
+          <div class="col-md-4 col-sm-6">
+            <div class="card h-100 shadow-lg border-0 rounded-4 overflow-hidden hover-card">
+              <img src="<%= product.image %>" 
+                   class="card-img-top img-fluid" 
+                   alt="<%= product.name %>" 
+                   style="height: 220px; object-fit: cover;">
+
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title fw-semibold text-dark"><%= product.name %></h5>
+
+                <div class="mt-auto">
+                  <form method="GET" action="/product/<%= product._id %>/show">
+                    <button type="submit" class="btn btn-gradient w-100">
+                      Show in Detail
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <div class="text-center">
+          <p class="text-muted fs-5">No products available at the moment.</p>
+        </div>
+      <% } %>
+    </div>
+  </div>
+
+  <style>
+    /* Gradient button */
+    .btn-gradient {
+      background: linear-gradient(45deg, #007bff, #00c6ff);
+      border: none;
+      color: #fff;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      border-radius: 12px;
+      padding: 10px 0;
+    }
+    .btn-gradient:hover {
+      background: linear-gradient(45deg, #0056b3, #0084b4);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 123, 255, 0.3);
+    }
+
+    /* Card hover effect */
+    .hover-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .hover-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+    }
+  </style>
+</body>
+
+
+
+
+
+
+

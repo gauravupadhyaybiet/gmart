@@ -1,0 +1,194 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Main content should take up the remaining space between header and footer */
+.main-content {
+    flex: 1;
+}
+
+footer {
+    background-color: #2c3e50; /* Dark background color */
+    color: #ecf0f1; /* Light text color */
+    padding: 20px 0;
+    text-align: center;
+    /* Ensures footer sticks to bottom if content is short */
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    margin-top: auto;
+}
+
+.f-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.f-info-socials {
+    display: flex;
+    gap: 20px;
+}
+
+.f-info-socials i {
+    font-size: 24px;
+    transition: color 0.3s;
+}
+
+.f-info-socials i:hover {
+    color: #3498db; /* Highlight color on hover */
+}
+
+.f-info-links a {
+    color: #ecf0f1;
+    text-decoration: none;
+    margin: 0 10px;
+    transition: color 0.3s;
+}
+
+.f-info-links a:hover {
+    color: #3498db; /* Highlight color on hover */
+}
+
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+        padding: 20px;
+    }
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .alert {
+        max-width: 600px;
+        margin: 10px auto;
+    }
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .navbar {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #ddd;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow effect */
+    }
+    
+    .navbar-brand {
+        font-size: 24px;
+        color: #007bff;
+    }
+    
+    .navbar-toggler {
+        border: none;
+        background: none;
+    }
+    
+    .navbar-toggler-icon {
+        color: #007bff;
+        font-size: 24px;
+    }
+    
+    .navbar-nav .nav-item .nav-link {
+        color: #007bff;
+        font-size: 16px;
+        padding: 8px 12px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Box shadow effect */
+    }
+    
+    .navbar-nav .nav-item .nav-link:hover {
+        background-color: #e2e6ea;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Box shadow effect on hover */
+    }
+    
+    .navbar-nav .nav-item .nav-link b {
+        font-weight: bold;
+    }
+    
+    .dropdown-menu {
+        background-color: #f8f9fa;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow effect */
+    }
+    
+    .dropdown-menu a {
+        color: #007bff;
+    }
+    
+    .dropdown-menu a:hover {
+        background-color: #e2e6ea;
+    }
+    
+    .form-control {
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Box shadow effect */
+    }
+    
+    .btn-outline-success {
+        color: #007bff;
+        border-color: #007bff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Box shadow effect */
+    }
+    
+    .btn-outline-success:hover {
+        background-color: #007bff;
+        color: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Box shadow effect on hover */
+    }
+    
+
+  /* Style for the card container */
+.container {
+    margin-bottom: 60px; /* Adds margin from the footer */
+  }
+  
+  .card {
+    margin-bottom: 20px;
+  }
+  
+  /* Ensures three cards are shown in medium size screens */
+  @media (min-width: 768px) and (max-width: 991px) {
+    .col-md-4 {
+      max-width: 33.333333%;
+    }
+  }
+  h1{
+    text-align: center;
+  }
+  /* Style for the unordered list */
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  /* Style for each list item */
+  li {
+    margin: 10px 0;
+  }
+  
+  /* Style for the dropdown items */
+  .dropdown-item {
+    display: block;
+    padding: 10px 15px;
+    color: #333;
+    background-color: #f8f9fa;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .dropdown-item:hover {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  
+  
+  
