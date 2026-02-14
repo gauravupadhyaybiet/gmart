@@ -1,85 +1,190 @@
-
-
 <% layout("/layouts/boilerplate") %>
+
+<style>
+
+body{
+  background:#f6f6f6;
+}
+
+/* GRID */
+
+.cart-container{
+  display:flex;
+  flex-wrap:wrap;
+  gap:25px;
+  justify-content:center;
+}
+
+/* CARD */
+
+.card{
+  width:300px;
+  border:none;
+  border-radius:12px;
+  overflow:hidden;
+  background:white;
+  box-shadow:0 6px 18px rgba(0,0,0,0.08);
+  transition:.25s ease;
+}
+
+.card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 16px 35px rgba(0,0,0,0.15);
+}
+
+/* AMAZON IMAGE BOX */
+
+.image-box{
+  width:100%;
+  height:230px;
+  background:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  border-bottom:1px solid #eee;
+}
+
+.image-box img{
+  max-width:100%;
+  max-height:100%;
+  object-fit:contain;
+  transition:.3s;
+}
+
+.card:hover img{
+  transform:scale(1.06);
+}
+
+/* BODY */
+
+.card-body{
+  padding:18px;
+  display:flex;
+  flex-direction:column;
+}
+
+/* TITLE */
+
+.card-title{
+  font-size:16px;
+  font-weight:600;
+  color:#222;
+  margin-bottom:12px;
+}
+
+/* PRICE */
+
+.price{
+  font-size:20px;
+  font-weight:700;
+  color:#B12704;
+}
+
+.original{
+  text-decoration:line-through;
+  color:#777;
+  margin-left:8px;
+  font-size:14px;
+}
+
+/* BUTTON AMAZON STYLE */
+
+.btn-primary{
+  margin-top:auto;
+  background:#FFD814;
+  border:none;
+  color:black;
+  font-weight:600;
+}
+
+.btn-primary:hover{
+  background:#F7CA00;
+  color:black;
+}
+
+.btn-danger{
+  margin-top:10px;
+}
+
+/* EMPTY */
+
+.empty-cart{
+  text-align:center;
+  font-size:22px;
+  margin-top:60px;
+}
+
+</style>
+
 
 <h1 class="text-center mb-4">Your Cart</h1>
 
-<% if (cartItems && cartItems.length > 0) { %>
+<% if(cartItems && cartItems.length>0){ %>
 
 <div class="cart-container">
 
-<% cartItems.forEach(item => {
+<% cartItems.forEach(item=>{
 
-   /* ================= SAFE CHECK ================= */
-   if(!item.productId){
-      return;   // skip deleted products
-   }
+if(!item.productId) return;
 
-   const product = item.productId;
+const p=item.productId;
 
-   const price = product.amount || 0;
-   const discount = product.discount || 0;
-   const quantity = item.quantity || 1;
+const price=p.amount||0;
+const discount=p.discount||0;
+const qty=item.quantity||1;
 
-   const discountedPrice =
-      discount > 0
-      ? price - (price * discount / 100)
-      : price;
+const final=discount>0
+ ? price-(price*discount/100)
+ : price;
 
-   const totalPrice = Math.round(discountedPrice * quantity);
+const total=Math.round(final*qty);
 
 %>
 
-<div class="cart-item">
+<div>
 
 <div class="card">
 
-<img src="<%= product.image || '/no-image.png' %>"
-     class="card-img-top"
-     alt="<%= product.name || 'Product' %>">
+<!-- AMAZON IMAGE -->
+<div class="image-box">
+<img src="<%= p.image || '/no-image.png' %>" alt="<%= p.name %>">
+</div>
 
 <div class="card-body">
 
-<h5 class="card-title">
-  <%= product.name || 'Unnamed product' %>
-</h5>
+<h5 class="card-title"><%= p.name %></h5>
 
 <p class="price">
 
-<span class="discounted">
-₹<%= totalPrice %>
-</span>
+₹<%= total %>
 
-<% if(discount > 0){ %>
-
-<span class="original">
-₹<%= price * quantity %>
-</span>
-
+<% if(discount>0){ %>
+<span class="original">₹<%= price*qty %></span>
 <span class="badge bg-warning text-dark ms-2">
 <%= discount %>% OFF
 </span>
-
 <% } %>
 
 </p>
 
 <button
- class="btn btn-primary pay-now"
- data-amount="<%= totalPrice %>"
- data-product-name="<%= (product.name||'Product').replace(/'/g,'\\\'') %>"
+class="btn btn-primary pay-now"
+data-amount="<%= total %>"
+data-product-name="<%= (p.name||'Product').replace(/'/g,'\\\'') %>"
 >
-Pay Now
+Buy Now
 </button>
 
 </div>
+
 </div>
 
 <form method="POST"
-      action="/cart/<%= item._id %>/delete?_method=DELETE">
+action="/cart/<%= item._id %>/delete?_method=DELETE">
 
-<button class="btn btn-danger w-100 mt-2">
-Delete
+<button class="btn btn-danger w-100">
+Remove
 </button>
 
 </form>
@@ -92,44 +197,41 @@ Delete
 
 <% } else { %>
 
-<p class="empty-cart text-center">
-Your cart is empty.
-</p>
+<p class="empty-cart">Your cart is empty</p>
 
 <% } %>
-
 
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <script>
 
-function payNow(amount, productName){
+function payNow(amount,product){
 
 fetch('/order',{
 method:'POST',
 headers:{'Content-Type':'application/json'},
 body:JSON.stringify({amount})
 })
-.then(res=>res.json())
+.then(r=>r.json())
 .then(order=>{
 
 const options={
 key:'rzp_test_tf9CPdWCcLlH39',
 amount:order.amount,
 currency:order.currency,
-name:productName,
+name:product,
 order_id:order.id,
 
-handler:function(response){
+handler:function(res){
 
 fetch('/verifypayment',{
 method:'POST',
 headers:{'Content-Type':'application/json'},
 body:JSON.stringify({
 order_id:order.id,
-payment_id:response.razorpay_payment_id,
-signature:response.razorpay_signature
+payment_id:res.razorpay_payment_id,
+signature:res.razorpay_signature
 })
 })
 .then(r=>r.text())
@@ -144,21 +246,12 @@ new Razorpay(options).open();
 
 }
 
-
-document.querySelectorAll('.pay-now').forEach(btn=>{
-
-btn.addEventListener('click',function(){
-
-payNow(
-this.dataset.amount,
-this.dataset.productName
-);
-
-});
-
+document.querySelectorAll('.pay-now').forEach(b=>{
+b.onclick=()=>payNow(b.dataset.amount,b.dataset.productName);
 });
 
 </script>
+
 
 
 
