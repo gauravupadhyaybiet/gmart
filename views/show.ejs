@@ -1,178 +1,250 @@
 <% layout("/layouts/boilerplate") %>
-<div class="container my-5 classical-theme">
 
-  <% if(success && success.length) { %>
-    <div class="alert alert-success alert-dismissible fade show shadow-sm rounded-pill px-4" role="alert">
-      <%= success %>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-  <% } %>
+<div class="container my-5">
 
-  <% if(error && error.length) { %>
-    <div class="alert alert-danger alert-dismissible fade show shadow-sm rounded-pill px-4" role="alert">
-      <%= error %>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-  <% } %>
+<!-- ALERTS -->
+<% if(success && success.length){ %>
+<div class="alert alert-success"><%= success %></div>
+<% } %>
 
-  <h1 class="text-center my-4 classical-title">Product Details</h1>
-  <div class="product-card card shadow-lg border-0 mx-auto" style="max-width: 700px;">
-    <img src="<%= showproduct.image %>" 
-         class="card-img-top rounded-top"
-         alt="<%= showproduct.name %>" 
-         style="max-height: 500px; object-fit: cover;">
-    <div class="card-body text-center">
-      <h2 class="product-title classical-heading"><%= showproduct.name %></h2>
-      <p class="classical-subtitle">Owned by <i><%= showproduct.owner.username %></i></p>
+<% if(error && error.length){ %>
+<div class="alert alert-danger"><%= error %></div>
+<% } %>
 
-      <!-- ✅ Discount Price Block -->
-      <div class="mb-3">
-        <% if(showproduct.discount && showproduct.discount > 0) { %>
-          <span class="fw-bold text-success fs-4 me-2">
-            ₹<%= showproduct.amount - (showproduct.amount * showproduct.discount / 100) %>
-          </span>
-          <span class="text-decoration-line-through text-muted fs-5">
-            ₹<%= showproduct.amount %>
-          </span>
-          <span class="badge bg-warning text-dark ms-2">
-            <%= showproduct.discount %>% OFF
-          </span>
-        <% } else { %>
-          <span class="fw-bold text-success fs-4">₹<%= showproduct.amount %></span>
-        <% } %>
-      </div>
-      <!-- ✅ End Discount Block -->
+<div class="row bg-white p-4 shadow-sm rounded">
 
-      <p class="product-text"><%= showproduct.description %></p>
-      <p class="text-muted">Stock Available: <strong><%= showproduct.stock %></strong></p>
+<!-- LEFT IMAGE (Amazon style) -->
+<div class="col-md-5 text-center">
 
-      <% if(curruser && showproduct.owner._id.equals(curruser._id) ) { %>
-        <form method="GET" action="/product/<%= showproduct._id %>/edit" class="d-inline-block me-2">
-          <button type="submit" class="btn btn-outline-dark px-4">✎ Edit</button>
-        </form>
-        <form method="POST" action="/deleteproduct/<%= showproduct._id %>?_method=DELETE" class="d-inline-block">
-          <button type="submit" class="btn btn-outline-danger px-4">✖ Delete</button>
-        </form>
-      <% } %>
-
-      <form action="/cart/add" method="POST" class="mt-3">
-        <input type="hidden" name="productId" value="<%= showproduct._id %>">
-        <input type="number" name="quantity" value="1" min="1" 
-               class="form-control mb-2 text-center mx-auto" style="width: 120px;">
-        <button type="submit" class="btn btn-dark w-50 fw-bold">Add to Cart</button>
-      </form>
-    </div>
-  </div>
-
-  <hr class="my-5">
-
-  <h4 class="text-center mb-3 classical-heading">Leave a Review</h4>
-  <% if(curruser) { %>
-    <form action="/product/<%= showproduct._id %>/reviews" method="POST" class="review-form text-center">
-      <div class="mb-3 star-rating d-flex justify-content-center gap-2 fs-2">
-        <% for(let i = 5; i >= 1; i--) { %>
-          <input type="radio" id="star<%= i %>" name="review[rating]" value="<%= i %>" hidden>
-          <label for="star<%= i %>" class="star"><i class="fas fa-star"></i></label>
-        <% } %>
-      </div>
-      <div class="mb-3">
-        <textarea name="review[comment]" id="comment" class="form-control classical-input" placeholder="Write your review..."></textarea>
-      </div>
-      <button type="submit" class="btn btn-outline-success px-5">Submit Review</button>
-    </form>
-  <% } %>
-
-  <hr class="my-5">
-
-  <h4 class="text-center mb-3 classical-heading">All Reviews</h4>
-  <div class="row justify-content-center">
-    <% for(review of showproduct.reviews){ %>
-      <div class="review-card card col-md-5 me-3 mb-3 shadow-sm border-0">
-        <div class="card-body">
-          <p class="fw-bold classical-subtitle"><%=review.author.username%></p>
-          <p class="fs-5">
-            <% for(let i=1; i<=review.rating; i++) { %>
-              <i class="fas fa-star text-warning"></i>
-            <% } %>
-            <% for(let i=review.rating+1; i<=5; i++) { %>
-              <i class="far fa-star text-warning"></i>
-            <% } %>
-          </p>
-          <p class="fst-italic"><%= review.comment %></p>
-        </div>
-        <form method="POST" action="/product/<%= showproduct._id %>/reviews/<%= review._id %>?_method=DELETE" class="text-center mb-2">
-          <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
-        </form>
-      </div>
-    <% } %>
-  </div>
-
-  <div class="text-center mt-4">
-    <a href="/categories" class="btn btn-outline-dark px-4">← Back to Categories</a>
-  </div>
+<div class="amazon-image-box">
+<img src="<%= showproduct.image %>" alt="<%= showproduct.name %>">
 </div>
 
+</div>
+
+<!-- RIGHT INFO -->
+<div class="col-md-7">
+
+<h2 class="amazon-title"><%= showproduct.name %></h2>
+
+<p class="text-muted mb-2">
+by <strong><%= showproduct.owner.username %></strong>
+</p>
+
+
+<!-- PRICE BLOCK -->
+<div class="mb-3">
+
+<% if(showproduct.discount && showproduct.discount>0){ %>
+
+<span class="amazon-price">
+₹<%= showproduct.amount-(showproduct.amount*showproduct.discount/100) %>
+</span>
+
+<span class="amazon-old">
+₹<%= showproduct.amount %>
+</span>
+
+<span class="badge bg-danger ms-2">
+<%= showproduct.discount %>% OFF
+</span>
+
+<% } else { %>
+
+<span class="amazon-price">₹<%= showproduct.amount %></span>
+
+<% } %>
+
+</div>
+
+<p class="mb-3"><%= showproduct.description %></p>
+
+<p class="text-success fw-bold">
+In Stock: <%= showproduct.stock %>
+</p>
+
+
+<!-- ADD TO CART AMAZON BUTTON -->
+<form action="/cart/add" method="POST">
+
+<input type="hidden" name="productId" value="<%= showproduct._id %>">
+
+<input type="number"
+name="quantity"
+value="1"
+min="1"
+class="form-control mb-3"
+style="width:120px">
+
+<button class="btn amazon-btn w-100">
+Add to Cart
+</button>
+
+</form>
+
+
+<!-- OWNER BUTTONS -->
+<% if(curruser && showproduct.owner._id.equals(curruser._id)){ %>
+
+<div class="mt-3">
+
+<form method="GET"
+action="/product/<%= showproduct._id %>/edit"
+class="d-inline">
+
+<button class="btn btn-outline-dark">
+Edit
+</button>
+
+</form>
+
+<form method="POST"
+action="/deleteproduct/<%= showproduct._id %>?_method=DELETE"
+class="d-inline">
+
+<button class="btn btn-outline-danger">
+Delete
+</button>
+
+</form>
+
+</div>
+
+<% } %>
+
+</div>
+</div>
+
+
+<!-- REVIEWS -->
+
+<h3 class="mt-5 mb-3">Customer Reviews</h3>
+
+<% if(curruser){ %>
+
+<form action="/product/<%= showproduct._id %>/reviews"
+method="POST"
+class="mb-4">
+
+<select name="review[rating]" class="form-select mb-2" required>
+<option value="">Select rating</option>
+<option>5</option>
+<option>4</option>
+<option>3</option>
+<option>2</option>
+<option>1</option>
+</select>
+
+<textarea
+name="review[comment]"
+class="form-control mb-2"
+placeholder="Write your review">
+</textarea>
+
+<button class="btn btn-warning">
+Submit Review
+</button>
+
+</form>
+
+<% } %>
+
+
+<!-- ALL REVIEWS -->
+
+<% for(review of showproduct.reviews){ %>
+
+<div class="amazon-review">
+
+<div class="fw-bold">
+<%= review.author.username %>
+</div>
+
+<div class="text-warning mb-1">
+<% for(let i=1;i<=review.rating;i++){ %>★<% } %>
+</div>
+
+<div><%= review.comment %></div>
+
+<form method="POST"
+action="/product/<%= showproduct._id %>/reviews/<%= review._id %>?_method=DELETE">
+
+<button class="btn btn-sm btn-outline-danger mt-1">
+Delete
+</button>
+
+</form>
+
+</div>
+
+<% } %>
+
+
+</div>
+
+
 <style>
-  /* Classical Theme */
-  .classical-theme {
-    font-family: 'Georgia', serif;
-    background-color: #fdfaf6;
-  }
-  .classical-title {
-    font-family: 'Times New Roman', serif;
-    font-size: 2.5rem;
-    color: #2c2c2c;
-    text-transform: uppercase;
-    border-bottom: 2px solid #ccc;
-    display: inline-block;
-    padding-bottom: 5px;
-  }
-  .classical-heading {
-    font-family: 'Georgia', serif;
-    color: #333;
-    font-weight: bold;
-  }
-  .classical-subtitle {
-    font-style: italic;
-    color: #555;
-  }
-  .classical-input {
-    border: 1px solid #aaa;
-    border-radius: 0;
-    background: #fffef9;
-  }
 
-  /* Stars */
-  .star-rating .star {
-    cursor: pointer;
-    color: #d3c6a3;
-    transition: color 0.3s;
-  }
-  .star-rating .star.selected,
-  .star-rating .star:hover,
-  .star-rating .star:hover ~ .star {
-    color: goldenrod;
-  }
+/* AMAZON IMAGE BOX */
 
-  /* Cards */
-  .card {
-    background: #fffdf8;
-    border-radius: 8px;
-  }
+.amazon-image-box{
+height:420px;
+display:flex;
+align-items:center;
+justify-content:center;
+background:white;
+border:1px solid #eee;
+padding:25px;
+}
+
+.amazon-image-box img{
+max-width:100%;
+max-height:100%;
+object-fit:contain;
+}
+
+/* TITLE */
+
+.amazon-title{
+font-size:28px;
+font-weight:500;
+}
+
+/* PRICE */
+
+.amazon-price{
+font-size:30px;
+color:#B12704;
+font-weight:700;
+}
+
+.amazon-old{
+text-decoration:line-through;
+margin-left:10px;
+color:#777;
+}
+
+/* AMAZON BUTTON */
+
+.amazon-btn{
+background:#FFD814;
+border:none;
+font-weight:600;
+}
+
+.amazon-btn:hover{
+background:#F7CA00;
+}
+
+/* REVIEWS */
+
+.amazon-review{
+border-bottom:1px solid #eee;
+padding:12px 0;
+}
+
 </style>
 
-<script>
-  // Make stars clickable & highlight rating
-  const stars = document.querySelectorAll('.star-rating .star');
-  stars.forEach((star, idx) => {
-    star.addEventListener('click', () => {
-      stars.forEach(s => s.classList.remove('selected'));
-      for (let i = 0; i <= idx; i++) {
-        stars[i].classList.add('selected');
-      }
-    });
-  });
-</script>
 
 
 
