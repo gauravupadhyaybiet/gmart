@@ -1,12 +1,19 @@
 /* ================= GLOBAL RESET ================= */
 
+/* ===== RESET ===== */
+
+*{
+box-sizing:border-box;
+}
+
 html,body{
 margin:0;
 padding:0;
-overflow-x:hidden;   /* prevents side gap */
+font-family:Arial, sans-serif;
+background:#f8f9fa;
 }
 
-/* ================= FOOTER ================= */
+/* ===== FOOTER ===== */
 
 footer{
 width:100%;
@@ -42,14 +49,13 @@ color:#3498db;
 color:#ecf0f1;
 text-decoration:none;
 margin:0 10px;
-transition:.3s;
 }
 
 .f-info-links a:hover{
 color:#3498db;
 }
 
-/* ================= NAVBAR ================= */
+/* ===== NAVBAR ===== */
 
 .navbar{
 background:#f8f9fa;
@@ -57,112 +63,18 @@ border-bottom:1px solid #ddd;
 box-shadow:0 4px 8px rgba(0,0,0,0.1);
 }
 
-.navbar-brand{
-font-size:24px;
-color:#007bff;
-}
-
-.navbar-nav .nav-link{
-color:#007bff;
-font-size:16px;
-padding:8px 12px;
-}
-
 .navbar-nav .nav-link:hover{
 background:#e2e6ea;
 border-radius:4px;
 }
 
-/* ================= DROPDOWN ================= */
-
-.dropdown-menu{
-background:#f8f9fa;
-box-shadow:0 4px 8px rgba(0,0,0,0.1);
-}
-
-.dropdown-menu a{
-color:#007bff;
-}
-
-.dropdown-menu a:hover{
-background:#e2e6ea;
-}
-
-/* ================= FORMS ================= */
-
-.form-control{
-border-radius:4px;
-box-shadow:0 2px 4px rgba(0,0,0,0.1);
-}
-
-/* ================= BUTTON ================= */
-
-.btn-outline-success{
-color:#007bff;
-border-color:#007bff;
-}
-
-.btn-outline-success:hover{
-background:#007bff;
-color:white;
-}
-
-/* ================= CARDS ================= */
-
-.container{
-margin-bottom:60px;
-}
+/* ===== CARD ===== */
 
 .card{
 margin-bottom:20px;
 }
 
-/* 3 cards on medium screens */
-
-@media (min-width:768px) and (max-width:991px){
-.col-md-4{
-max-width:33.333333%;
-}
-}
-
-/* ================= HEADINGS ================= */
-
-h1{
-text-align:center;
-margin-bottom:20px;
-}
-
-/* ================= LIST STYLE ================= */
-
-ul{
-list-style:none;
-padding:0;
-margin:0;
-}
-
-li{
-margin:10px 0;
-}
-
-/* ================= DROPDOWN ITEMS ================= */
-
-.dropdown-item{
-display:block;
-padding:10px 15px;
-color:#333;
-background:#f8f9fa;
-text-decoration:none;
-border:1px solid #ddd;
-border-radius:5px;
-transition:.3s;
-}
-
-.dropdown-item:hover{
-background:#007bff;
-color:white;
-}
-
-/* ================= ALERTS ================= */
+/* ===== ALERT ===== */
 
 .alert{
 max-width:600px;
