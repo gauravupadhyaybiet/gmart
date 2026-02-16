@@ -9,6 +9,11 @@ html, body {
 .main-content {
     flex: 1;
 }
+footer{
+width:100vw;
+margin-left:calc(-50vw + 50%);
+}
+
 
 .footer-full{
 background:#2c3e50;
